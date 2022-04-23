@@ -1,7 +1,9 @@
 #![allow(unused)]
 
+use std::{thread, time};
 use anyhow::{Context, Result};
 use clap::Parser;
+use indicatif::ProgressBar;
 
 /// Search for a pattern in a file and display the lines that contain it.
 #[derive(Parser)]
@@ -14,6 +16,13 @@ struct Cli {
 }
 
 fn main() -> Result<()>  {
+  let bar = ProgressBar::new(100);
+  for _ in 0..100 {
+    thread::sleep(time::Duration::from_millis(10));
+    bar.inc(1);
+  }
+  bar.finish();
+
   let args = Cli::parse();
   let path = &args.path;
   let content = std::fs::read_to_string(path)
